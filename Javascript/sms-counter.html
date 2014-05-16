@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>SMS counter test (JS)</title>
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    </head>
+    <body>
+        <textarea style="width:400px;height:200px;"></textarea>
+        <div id="answer">0</div>
+        <script>
+        $(document).ready(function () {
+            /*
+             * Compute the number of characters and SMS needed to send a message.
+             */
+            function smsCharCount(message) {
+                var gsm7bitChars   = "@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !\"#¤%&'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà";
+                var gsm7bitExChars = "^{}\\[~]|€";
+
+                // default to GSM-7bit, we'll detect if we need to switch to
+                // UCS-2 later.
+                var data = {
+                    encoding: 'GSM-7bit',
+                    characters: 0,
+                    max_chars_for_one_sms:   160,
+                    max_chars_for_many_sms:  153
+                };
+                // This JS loop is UTF-8 (input) aware.
+                for (var i = 0, len = message.length; i < len; i++) {
+                    var c = message.charAt(i);
+                    if (gsm7bitChars.indexOf(c) > -1) {
+                        data.characters += 1;
+                    } else if (gsm7bitExChars.indexOf(c) > -1) {
+                        data.characters += 2;
+                    } else {
+                        // we're reading a character that cannot be
+                        // represented in the GSM-7bit charset, switch to
+                        // UCS-2.
+                        data.encoding = 'UCS-2';
+                        data.characters = message.length;
+                        data.max_chars_for_one_sms  = 70;
+                        data.max_chars_for_many_sms = 67;
+                        break;
+                    }
+                }
+
+                // compute the # of SMS.
+                if (data.characters <= data.max_chars_for_one_sms) {
+                    // simple case, only one SMS.
+                    data.sms = 1;
+                    data.remaining = data.max_chars_for_one_sms - data.characters;
+                } else {
+                    // use SMS concatenation
+                    data.sms       = 1 + Math.floor((data.characters - 1) / data.max_chars_for_many_sms);
+                    data.remaining = (data.sms * data.max_chars_for_many_sms) - data.characters;
+                }
+
+                return data;
+            }
+
+            // textarea tester.
+            $('textarea').keyup(function () {
+                var data = smsCharCount($(this).val());
+                var txt = data.sms + " SMS encoded in " + data.encoding;
+                txt    += " (" + (data.sms == 1 ? data.max_chars_for_one_sms : data.max_chars_for_many_sms) + " character per SMS).<br>";
+                txt    += data.characters + " characters in total, " + data.remaining + " character left until next SMS.";
+                $('#answer').html(txt);
+            });
+        });
+        </script>
+    </body>
+</html>
