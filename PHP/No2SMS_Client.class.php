@@ -219,7 +219,7 @@ class No2SMS_Client {
         $to      = (is_array($to) ? $to : array($to));
         $message = (No2SMS_Client::is_utf8($message) ? $message : utf8_encode($message));
         $from    = (No2SMS_Client::is_utf8($from)    ? $from    : utf8_encode($from));
-        $date    = (No2SMS_Client::is_utf8($date)    ? $date    : utf8_encode($date));
+        $date    = (No2SMS_Client::is_utf8($date)    ? $date    : utf8_encode($date)); // XXX: not really needed.
 
         return $this->_RPC('send_message',
             $this->user, $this->password, $to, $message, $from, $date, $type
