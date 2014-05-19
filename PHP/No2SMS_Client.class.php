@@ -291,7 +291,6 @@ class No2SMS_Client {
      * @return
      *   An integer value. Note that if your account type allow to go bellow
      *   zero credits count, the returned value can be negative.
-     *   If a connection or protocol error arise, an Exception is thrown.
      *
      * If a connection or protocol error arise, an Exception is thrown.
      */
@@ -304,7 +303,6 @@ class No2SMS_Client {
      *
      * @return
      *   A description string of your account type like 'free' or 'regular'.
-     *   If a connection or protocol error arise, an Exception is thrown.
      *
      * If a connection or protocol error arise, an Exception is thrown.
      */
@@ -319,9 +317,9 @@ class No2SMS_Client {
      * different settings at the group level and not only at the user level.
      *
      * @return
-     *   API guid are represented as strings of 36 characters in the following
-     *   form: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-     *   where x is an hexadecimal digit ([0-9][a-f]).
+     *   API GUID are represented as strings of 36 characters in the following
+     *   form: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an hexadecimal
+     *   digit ([0-9][a-f]).
      *
      * If a connection or protocol error arise, an Exception is thrown.
      */
