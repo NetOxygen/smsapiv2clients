@@ -25,6 +25,7 @@
                     max_chars_for_one_sms:   160,
                     max_chars_for_many_sms:  153
                 };
+
                 // This JS loop is UTF-8 (input) aware.
                 for (var i = 0, len = message.length; i < len; i++) {
                     var c = message.charAt(i);
@@ -44,7 +45,7 @@
                     }
                 }
 
-                // compute the # of SMS.
+                // compute the number of SMS needed.
                 if (data.characters <= data.max_chars_for_one_sms) {
                     // simple case, only one SMS.
                     data.sms = 1;
