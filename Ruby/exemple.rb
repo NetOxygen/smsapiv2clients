@@ -15,4 +15,4 @@ res = client.send_message(dest, message)
 id = res[0][2]
 pp client.get_status(id)
 
-puts "Il vous reset #{client.get_credits} crédits"
+puts "Il vous reste #{client.get_credits} crédits"
